@@ -1,4 +1,8 @@
-# A Snake game created with React 18.2.0
+# Snake game 
+## Built with React 18.2.0
+
+## GitHub Pages deployed ling
+https://github.com/NickRumenov/react-snake/settings/pages
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
