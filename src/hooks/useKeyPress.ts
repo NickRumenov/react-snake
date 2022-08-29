@@ -15,7 +15,7 @@ const useKeyPress = (targetKeys: string[]) => {
     return () => {
       window.removeEventListener('keydown', downHandler)
     }
-  }, [])
+  }, [downHandler])
 
   return keyPressed
 }

@@ -24,15 +24,16 @@ interface Props {
 const {BOARD_X_CELL, BOARD_Y_CELL, INITIAL_DIRECTION, SNAKE_STARTING_CELLS} = config
 const {Up, Down, Right, Left} = Directions
 
+const matrix = buildMatrix(BOARD_X_CELL, BOARD_Y_CELL)
+
 const Board: FC<Props> = ({isPlaying, setIsPlaying}) => {
 
   const [direction, setDirection] = useState<string>(INITIAL_DIRECTION)
   const [snake, setSnake] = useState<Cords[]>(SNAKE_STARTING_CELLS)
   const [apple, setApple] = useState<Cords>({row: -1, col: -1})
 
-  const matrix = buildMatrix(BOARD_X_CELL, BOARD_Y_CELL)
-  const snakeHead = snake[0]
   const pressedKey = useKeyPress([Up, Down, Right, Left])
+  const snakeHead = snake[0]
 
   useEffect(() => {
     if (pressedKey) {
@@ -58,7 +59,7 @@ const Board: FC<Props> = ({isPlaying, setIsPlaying}) => {
     if (isCollision(snakeHead, BOARD_X_CELL, BOARD_Y_CELL, snake)) {
       setIsPlaying(false)
     }
-  }, [snakeHead])
+  }, [snakeHead, setIsPlaying])
 
   
   useInterval(
