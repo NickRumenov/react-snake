@@ -1,13 +1,14 @@
-import {useEffect, useState} from "react"
+import {useCallback, useEffect, useState} from "react"
 
 const useKeyPress = (targetKeys: string[]) => {
   const [keyPressed, setKeyPressed] = useState(null)
 
-  const downHandler = ({ key }: any) => {
+  const downHandler = useCallback(({ key }: any) => {
     if (targetKeys.includes(key)) {
       setKeyPressed(key)
     }
-  }
+  }, [setKeyPressed, targetKeys])
+
 
   useEffect(() => {
     window.addEventListener('keydown', downHandler)

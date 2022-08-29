@@ -52,13 +52,13 @@ const isAppleCell = (cell: Cords, apple: Cords): boolean => {
   return cell.row === apple.row && cell.col === apple.col
 }
 
-const isCollision = ({row, col}: Cords, BOARD_X_CELL: number, BOARD_Y_CELL: number, snake: Cords[]): boolean => {
+const isCollision = ({row, col}: Cords, BOARD_X: number, BOARD_Y: number, snake: Cords[]): boolean => {
 
   const isSnakeSelfOverlapped = snake.slice(1).some(cell => {
     return row === cell.row && col === cell.col;
   })
 
-  return isSnakeSelfOverlapped || row < 0 || col < 0 || col >= BOARD_X_CELL || row >= BOARD_Y_CELL;
+  return isSnakeSelfOverlapped || row < 0 || col < 0 || col >= BOARD_X || row >= BOARD_Y;
 }
 
 const getRandomNumber = (max: number): number => {
@@ -89,6 +89,17 @@ const getAdditionCell = (snake: Cords[], direction: string): Cords => {
   return {row: lastCell.row + 1, col: lastCell.col}
 }
 
+// If snake's direction is right, you shouldn't press right or left
+// same as Up and Down, this functions checks for that
+const isAllowedDirection = (currDirection: any, newDirection: any): boolean => {
+  const {Up, Down, Left, Right} = Directions
+  const xDirections = [Up, Down]
+  const yDirections = [Right, Left]
+
+  return !(xDirections.includes(currDirection) && xDirections.includes(newDirection)) &&
+    !(yDirections.includes(currDirection) && yDirections.includes(newDirection))
+}
+
 export {
   buildMatrix,
   getFrontCell,
@@ -98,5 +109,6 @@ export {
   getRandomNumber,
   createApple,
   isAppleEaten,
-  getAdditionCell
+  getAdditionCell,
+  isAllowedDirection
 }

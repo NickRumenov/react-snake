@@ -13,20 +13,22 @@ import {
   isCollision,
   isAppleCell,
   isAppleEaten,
-  getAdditionCell
+  getAdditionCell,
+  isAllowedDirection
 } from "../utils/utils"
 
 interface Props {
   isPlaying: boolean
   setIsPlaying: (isPlaying: boolean) => void
+  increaseAppleCount: () => void
 }
 
-const {BOARD_X_CELL, BOARD_Y_CELL, INITIAL_DIRECTION, SNAKE_STARTING_CELLS} = config
+const {BOARD_X, BOARD_Y, INITIAL_DIRECTION, SNAKE_STARTING_CELLS, SPEED} = config
 const {Up, Down, Right, Left} = Directions
 
-const matrix = buildMatrix(BOARD_X_CELL, BOARD_Y_CELL)
+const matrix = buildMatrix(BOARD_X, BOARD_Y)
 
-const Board: FC<Props> = ({isPlaying, setIsPlaying}) => {
+const Board: FC<Props> = ({isPlaying, setIsPlaying, increaseAppleCount}) => {
 
   const [direction, setDirection] = useState<string>(INITIAL_DIRECTION)
   const [snake, setSnake] = useState<Cords[]>(SNAKE_STARTING_CELLS)
@@ -36,37 +38,38 @@ const Board: FC<Props> = ({isPlaying, setIsPlaying}) => {
   const snakeHead = snake[0]
 
   useEffect(() => {
-    if (pressedKey) {
+    if (pressedKey && isAllowedDirection(direction, pressedKey)) {
       setDirection(pressedKey)
     }
-  }, [pressedKey])
+  }, [pressedKey, direction])
 
   useEffect(() => {
-    const appleCords = createApple(BOARD_X_CELL, BOARD_Y_CELL)
+    const appleCords = createApple(BOARD_X, BOARD_Y)
     setApple(appleCords)
   }, [])
   
   useEffect(() => {
     if (isAppleEaten(snakeHead, apple)) {
       setSnake([...snake, getAdditionCell(snake, direction)])
-      const appleCords = createApple(BOARD_X_CELL, BOARD_Y_CELL)
+      const appleCords = createApple(BOARD_X, BOARD_Y)
       setApple(appleCords)
+      increaseAppleCount()
     }
-  }, [snakeHead, apple, direction, snake])
+  }, [snakeHead, apple, direction, snake, increaseAppleCount])
 
 
   useEffect(() => {
-    if (isCollision(snakeHead, BOARD_X_CELL, BOARD_Y_CELL, snake)) {
+    if (isCollision(snakeHead, BOARD_X, BOARD_Y, snake)) {
       setIsPlaying(false)
     }
-  }, [snakeHead, setIsPlaying])
+  }, [snakeHead, snake, setIsPlaying])
 
   
   useInterval(
     () => {
       setSnake(() => [getFrontCell(snakeHead, direction), ...snake.slice(0, -1)])
     },
-    isPlaying ? 200 : null
+    isPlaying ? SPEED : null
   )
 
   return (

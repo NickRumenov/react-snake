@@ -1,6 +1,7 @@
 {
-  "BOARD_X_CELL": 10,
-  "BOARD_Y_CELL": 10,
+  "SPEED": 100,
+  "BOARD_X": 15,
+  "BOARD_Y": 15,
   "INITIAL_DIRECTION": "ArrowRight",
   "SNAKE_STARTING_CELLS": [
     {
