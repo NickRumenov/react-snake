@@ -17,11 +17,11 @@ function App() {
 
   return (
     <div className='app'>
+      <InfoBanner isPlaying={isPlaying} appleCounter={appleCounter}/>
       {isPlaying ?
         <Board isPlaying={isPlaying} setIsPlaying={setIsPlaying} increaseAppleCount={increaseAppleCount}/> :
         <button className='play-button' onClick={onRestart}>Play</button>
       }
-      <InfoBanner isPlaying={isPlaying} appleCounter={appleCounter}/>
     </div>
   )
 }
