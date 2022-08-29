@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/static/css/main.c1893d62.css",
-    "main.js": "/static/js/main.9c72acaa.js",
-    "static/js/787.9676b279.chunk.js": "/static/js/787.9676b279.chunk.js",
-    "index.html": "/index.html",
-    "main.c1893d62.css.map": "/static/css/main.c1893d62.css.map",
-    "main.9c72acaa.js.map": "/static/js/main.9c72acaa.js.map",
-    "787.9676b279.chunk.js.map": "/static/js/787.9676b279.chunk.js.map"
+    "main.css": "/react-snake/static/css/main.c1893d62.css",
+    "main.js": "/react-snake/static/js/main.c401a175.js",
+    "static/js/787.9676b279.chunk.js": "/react-snake/static/js/787.9676b279.chunk.js",
+    "index.html": "/react-snake/index.html",
+    "main.c1893d62.css.map": "/react-snake/static/css/main.c1893d62.css.map",
+    "main.c401a175.js.map": "/react-snake/static/js/main.c401a175.js.map",
+    "787.9676b279.chunk.js.map": "/react-snake/static/js/787.9676b279.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.c1893d62.css",
-    "static/js/main.9c72acaa.js"
+    "static/js/main.c401a175.js"
   ]
 }
