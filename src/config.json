@@ -1,0 +1,23 @@
+{
+  "BOARD_X_CELL": 10,
+  "BOARD_Y_CELL": 10,
+  "INITIAL_DIRECTION": "ArrowRight",
+  "SNAKE_STARTING_CELLS": [
+    {
+      "row": 0,
+      "col": 4
+    },{
+      "row": 0,
+      "col": 3
+    },{
+      "row": 0,
+      "col": 2
+    },{
+      "row": 0,
+      "col": 1
+    },{
+      "row": 0,
+      "col": 0
+    }
+  ]
+}
