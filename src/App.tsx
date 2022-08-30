@@ -11,16 +11,12 @@ function App() {
     setAppleCounter(appleCounter + 1)
   }
 
-  const onRestart = () => {
-    setIsPlaying(true)
-  }
-
   return (
     <div className='app'>
       <InfoBanner isPlaying={isPlaying} appleCounter={appleCounter}/>
       {isPlaying ?
         <Board isPlaying={isPlaying} setIsPlaying={setIsPlaying} increaseAppleCount={increaseAppleCount}/> :
-        <button className='play-button' onClick={onRestart}>Play</button>
+        <button className='play-button' onClick={() => setIsPlaying(true)}>Play</button>
       }
     </div>
   )
