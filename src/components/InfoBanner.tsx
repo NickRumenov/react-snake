@@ -3,14 +3,16 @@ import {FC} from "react"
 interface Props {
   isPlaying: boolean,
   appleCounter: number
+  restartGame: () => void
 }
 
-const InfoBanner: FC<Props> = ({isPlaying, appleCounter}) => {
+const InfoBanner: FC<Props> = ({isPlaying, appleCounter, restartGame}) => {
 
   return (
     <div className='info-bar'>
-      <h3>Apples {appleCounter}</h3>
-      <h1>{isPlaying ? '' : 'Dead'}</h1>
+      <b>Apples: {appleCounter}</b>
+      <b>{isPlaying ? '' : 'Dead'}</b>
+      <button className='play-button' onClick={restartGame}>Restart</button>
     </div>
   )
 }

@@ -2,23 +2,23 @@
   "SPEED": 100,
   "BOARD_X": 15,
   "BOARD_Y": 15,
-  "INITIAL_DIRECTION": "ArrowRight",
+  "INITIAL_DIRECTION": "ArrowDown",
   "SNAKE_STARTING_CELLS": [
     {
-      "row": 0,
-      "col": 4
+      "row": 4,
+      "col": 7
+    },{
+      "row": 3,
+      "col": 7
+    },{
+      "row": 2,
+      "col": 7
+    },{
+      "row": 1,
+      "col": 7
     },{
       "row": 0,
-      "col": 3
-    },{
-      "row": 0,
-      "col": 2
-    },{
-      "row": 0,
-      "col": 1
-    },{
-      "row": 0,
-      "col": 0
+      "col": 7
     }
   ]
 }

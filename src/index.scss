@@ -50,13 +50,18 @@ code {
 
 .info-bar {
   text-align: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 20px;
 }
 
 .play-button {
   background-color: #40f5f2;
   border-radius: 6px;
   border-width: 0;
-  font-size: 18px;
-  height: 40px;
-  width: 120px;
+  font-size: 15px;
+  height: 30px;
+  width: 100px;
 }
+
