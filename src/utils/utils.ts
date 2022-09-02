@@ -1,23 +1,24 @@
 import {Cords} from "../models/types"
 import {Directions} from "../models/enums"
 
-const buildMatrix = (x: number, y: number): Cords[][] => {
-  const matrix = []
+const buildBoardMatrix = (rows: number, cols: number): Cords[][] => {
+  const matrix: Cords[][] = []
 
-  for (let i = 0; i < x; i++) {
-    const row = []
+  for (let i = 0; i < rows; i++) {
 
-    for (let j = 0; j < y; j++) {
-      row.push({row: i, col: j})
+    matrix[i] = []
+
+    for (let j = 0; j < cols; j++) {
+      matrix[i].push({row: i, col: j})
     }
-
-    matrix.push(row)
   }
 
   return matrix
 }
 
-const getFrontCell = ({row, col}: Cords, direction: string): Cords => {
+
+// In order the snake to grow, we need to get the cell in front of the snake and populate it
+const getSnakeFrontCell = ({row, col}: Cords, direction: string): Cords => {
 
   if (direction === Directions.Right) {
     return {
@@ -42,17 +43,18 @@ const getFrontCell = ({row, col}: Cords, direction: string): Cords => {
   }
 }
 
-const isOccupiedBySnake = (cell: Cords, snakeCells: Cords[]): boolean => {
+const isOccupiedBySnake = (currCell: Cords, snakeCells: Cords[]): boolean => {
   return snakeCells.some(snakeCell => {
-    return snakeCell.row === cell.row && snakeCell.col === cell.col;
+    return snakeCell.row === currCell.row && snakeCell.col === currCell.col;
   })
 }
 
-const isAppleCell = (cell: Cords, apple: Cords): boolean => {
-  return cell.row === apple.row && cell.col === apple.col
+const isAppleCell = (currCell: Cords, apple: Cords): boolean => {
+  return currCell.row === apple.row && currCell.col === apple.col
 }
 
-const isCollision = ({row, col}: Cords, BOARD_X: number, BOARD_Y: number, snake: Cords[]): boolean => {
+const isCollision = (snake: Cords[], BOARD_X: number, BOARD_Y: number): boolean => {
+  const {row, col} = snake[0] // SnakeHead
 
   const isSnakeSelfOverlapped = snake.slice(1).some(cell => {
     return row === cell.row && col === cell.col;
@@ -66,30 +68,14 @@ const getRandomNumber = (max: number): number => {
 }
 
 const createApple = (maxRow: number, maxCol: number): Cords => {
-  const appleRow = getRandomNumber(maxRow)
-  const appleCol = getRandomNumber(maxCol)
-  return {row: appleRow, col: appleCol}
+  return {row: getRandomNumber(maxRow), col: getRandomNumber(maxCol)}
 }
 
 const isAppleEaten = (snakeHead: Cords, apple: Cords): boolean => {
   return snakeHead.row === apple.row && snakeHead.col === apple.col
 }
 
-const getAdditionCell = (snake: Cords[], direction: string): Cords => {
-  const lastCell = snake[snake.length - 1]
-
-  if (direction === Directions.Right) {
-    return {row: lastCell.row, col: lastCell.col - 1}
-  } else if (direction === Directions.Left) {
-    return {row: lastCell.row, col: lastCell.col + 1}
-  } else if (direction === Directions.Down) {
-    return {row: lastCell.row - 1, col: lastCell.col}
-  }
-
-  return {row: lastCell.row + 1, col: lastCell.col}
-}
-
-// If snake's direction is right, you shouldn't press right or left
+// If snake's direction is right, players shouldn't be allowed to press right or left
 // same as Up and Down, this functions checks for that
 const isAllowedDirection = (currDirection: any, newDirection: any): boolean => {
   const {Up, Down, Left, Right} = Directions
@@ -100,15 +86,26 @@ const isAllowedDirection = (currDirection: any, newDirection: any): boolean => {
     !(yDirections.includes(currDirection) && yDirections.includes(newDirection))
 }
 
+const getClassByOccupier = ({row, col}: Cords, snake: Cords[], apple: Cords): string => {
+
+  if (isOccupiedBySnake({row, col}, snake)) {
+    return 'snake'
+  } else if (isAppleCell({row, col}, apple)) {
+    return 'apple'
+  }
+
+  return ''
+}
+
 export {
-  buildMatrix,
-  getFrontCell,
+  buildBoardMatrix,
+  getSnakeFrontCell,
   isOccupiedBySnake,
   isAppleCell,
   isCollision,
   getRandomNumber,
   createApple,
   isAppleEaten,
-  getAdditionCell,
-  isAllowedDirection
+  isAllowedDirection,
+  getClassByOccupier
 }
