@@ -6,21 +6,22 @@ import InfoBanner from './components/InfoBanner'
 function App() {
 
   const [isPlaying, setIsPlaying] = useState<boolean>(false)
-  const [appleCounter, setAppleCounter] = useState<number>(0)
+  const [appleCount, setAppleCount] = useState<number>(0)
   const [boardKey, setBoardKey] = useState<number>(0)
 
   const increaseAppleCount = () => {
-    setAppleCounter(currAppleCount => currAppleCount + 1)
+    setAppleCount(currAppleCount => currAppleCount + 1)
   }
 
   const play = () => {
     setBoardKey(new Date().getTime())
     setIsPlaying(true)
+    setAppleCount(0)
   }
   
   return (
     <div className='app'>
-      <InfoBanner isPlaying={isPlaying} appleCounter={appleCounter} play={play}/>
+      <InfoBanner isPlaying={isPlaying} appleCount={appleCount} play={play}/>
       <Board key={boardKey} isPlaying={isPlaying} setIsPlaying={setIsPlaying} increaseAppleCount={increaseAppleCount}/>
     </div>
   )

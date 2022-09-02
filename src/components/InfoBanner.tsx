@@ -2,11 +2,11 @@ import {FC, useEffect, useState} from "react"
 
 interface Props {
   isPlaying: boolean,
-  appleCounter: number
+  appleCount: number
   play: () => void
 }
 
-const InfoBanner: FC<Props> = ({isPlaying, appleCounter, play}) => {
+const InfoBanner: FC<Props> = ({isPlaying, appleCount, play}) => {
 
   const [isInitialLoading, setIsInitialLoading] = useState<boolean>(true)
 
@@ -16,7 +16,7 @@ const InfoBanner: FC<Props> = ({isPlaying, appleCounter, play}) => {
 
   return (
     <div className='info-bar'>
-      <b>Apples: {appleCounter}</b>
+      <b>Apples: {appleCount}</b>
       <b>{!isPlaying && !isInitialLoading ? 'Dead' : ''}</b>
       <button className='play-button' onClick={play}>Play</button>
     </div>

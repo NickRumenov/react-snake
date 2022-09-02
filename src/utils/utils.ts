@@ -68,6 +68,7 @@ const getRandomNumber = (max: number): number => {
 }
 
 const createApple = (maxRow: number, maxCol: number): Cords => {
+  // TODO Add additional check, the apple shouldn't overlap with the snake
   return {row: getRandomNumber(maxRow), col: getRandomNumber(maxCol)}
 }
 
