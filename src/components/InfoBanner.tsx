@@ -6,7 +6,7 @@ interface Props {
   play: () => void
 }
 
-const InfoBanner: FC<Props> = ({isPlaying, appleCount, play}) => {
+const InfoBanner: FC<Props> = ({isPlaying, play, appleCount}) => {
 
   const [isInitialLoading, setIsInitialLoading] = useState<boolean>(true)
 

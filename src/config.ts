@@ -2,10 +2,10 @@ import {Directions} from "./models/enums"
 
 const config = {
   "SPEED": 100,
-  "BOARD_X": 15,
-  "BOARD_Y": 15,
+  "BOARD_ROWS": 15,
+  "BOARD_COLUMNS": 15,
   "INITIAL_DIRECTION": Directions.Down,
-  "SNAKE_STARTING_CELLS": [
+  "SNAKE_INITIAL_CELLS": [
     {
       "row": 4,
       "col": 7

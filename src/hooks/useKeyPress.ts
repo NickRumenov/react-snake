@@ -1,7 +1,9 @@
 import {useCallback, useEffect, useState} from "react"
 
-const useKeyPress = (targetKeys: string[]) => {
-  const [keyPressed, setKeyPressed] = useState(null)
+import { Directions } from "../models/enums"
+
+const useKeyPress = (targetKeys: Directions[]) => {
+  const [keyPressed, setKeyPressed] = useState<Directions>(Directions.Down)
 
   const downHandler = useCallback(({ key }: any) => {
     if (targetKeys.includes(key)) {

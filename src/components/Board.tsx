@@ -11,60 +11,53 @@ import {
   createApple,
   isCollision,
   isAppleEaten,
-  isAllowedDirection,
-  getClassByOccupier
+  getClassByOccupier,
+  getAllowedDirection
 } from "../utils/utils"
 
 interface Props {
   isPlaying: boolean
   setIsPlaying: (isPlaying: boolean) => void
-  increaseAppleCount: () => void
+  setAppleCount: (appleCount: number) => void
 }
 
-const {BOARD_X, BOARD_Y, INITIAL_DIRECTION, SNAKE_STARTING_CELLS, SPEED} = config
+const {BOARD_ROWS, BOARD_COLUMNS, INITIAL_DIRECTION, SNAKE_INITIAL_CELLS, SPEED} = config
 
-const matrixBoard = buildBoardMatrix(BOARD_X, BOARD_Y)
+const matrixBoard = buildBoardMatrix(BOARD_ROWS, BOARD_COLUMNS)
+const initialApple = createApple({row: BOARD_ROWS, col: BOARD_COLUMNS})
 
-
-const Board: FC<Props> = ({isPlaying, setIsPlaying, increaseAppleCount}) => {
+const Board: FC<Props> = ({isPlaying, setIsPlaying, setAppleCount}) => {
 
   const [direction, setDirection] = useState<Directions>(INITIAL_DIRECTION)
-  const [snake, setSnake] = useState<Cords[]>(SNAKE_STARTING_CELLS)
-  const [apple, setApple] = useState<Cords>({row: -1, col: -1})
+  const [snake, setSnake] = useState<Cords[]>(SNAKE_INITIAL_CELLS)
+  const [apple, setApple] = useState<Cords>(initialApple)
   const pressedKey = useKeyPress(Object.values({...Directions}))
   const snakeHead = snake[0]
 
-  useEffect(() => {
-    if (pressedKey && isAllowedDirection(direction, pressedKey)) {
-      setDirection(pressedKey)
-    }
-  }, [pressedKey, direction])
 
   useEffect(() => {
-    isPlaying && setApple(createApple(BOARD_X, BOARD_Y))
-  }, [isPlaying])
+    isCollision(snake, {row: BOARD_ROWS, col: BOARD_COLUMNS}) && setIsPlaying(false)
+  }, [snake, setIsPlaying])
 
   useEffect(() => {
-    if (isAppleEaten(snakeHead, apple)) {
-      setSnake([...snake, getSnakeFrontCell(snakeHead, direction)])
-      setApple(createApple(BOARD_X, BOARD_Y))
-      increaseAppleCount()
-    }
-  }, [snakeHead, apple, direction, snake, increaseAppleCount])
-
-
-  useEffect(() => {
-    if (isCollision(snake, BOARD_X, BOARD_Y)) {
-      setIsPlaying(false)
-    }
-  }, [snakeHead, snake, setIsPlaying])
-
-
+    setAppleCount(snake.length - SNAKE_INITIAL_CELLS.length)
+  }, [snake, setAppleCount])
+  
   useInterval(
-    () => setSnake(() => [getSnakeFrontCell(snakeHead, direction), ...snake.slice(0, -1)]),
+    () => {
+      const newDirection = getAllowedDirection(direction, pressedKey)
+      setDirection(newDirection)
+
+      if (!isAppleEaten(snakeHead, apple)) {
+        setSnake([getSnakeFrontCell(snakeHead, newDirection), ...snake.slice(0, -1)])
+      } else {
+        setSnake([getSnakeFrontCell(snakeHead, newDirection), ...snake])
+        setApple(createApple({row: BOARD_ROWS, col: BOARD_COLUMNS}))
+      }
+    },
     isPlaying ? SPEED : null
   )
-
+  
   return (
     <div className='board'>
       {matrixBoard.map((line: Cords[], row: number) => (
