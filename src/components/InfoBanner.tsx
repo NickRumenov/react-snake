@@ -1,23 +1,23 @@
 import {FC, useEffect, useState} from "react"
 
 interface Props {
-  isPlaying: boolean,
+  isGameOver: boolean,
   appleCount: number
   play: () => void
 }
 
-const InfoBanner: FC<Props> = ({isPlaying, play, appleCount}) => {
+const InfoBanner: FC<Props> = ({isGameOver, play, appleCount}) => {
 
   const [isInitialLoading, setIsInitialLoading] = useState<boolean>(true)
 
   useEffect(() => {
-    isPlaying && setIsInitialLoading(false)
-  }, [isPlaying])
+    isGameOver && setIsInitialLoading(false)
+  }, [isGameOver])
 
   return (
     <div className='info-bar'>
       <b>Apples: {appleCount}</b>
-      <b>{!isPlaying && !isInitialLoading ? 'Dead' : ''}</b>
+      <b>{!isGameOver && !isInitialLoading ? 'Game Over' : ''}</b>
       <button className='play-button' onClick={play}>Play</button>
     </div>
   )

@@ -1,4 +1,4 @@
-export interface Cords {
+export interface Coords {
   row: number,
   col: number
 }

@@ -1,8 +1,8 @@
-import {Cords} from "../models/types"
+import {Coords} from "../models/types"
 import {Directions} from "../models/enums"
 
-const buildBoardMatrix = (rows: number, cols: number): Cords[][] => {
-  const matrix: Cords[][] = []
+const buildBoardMatrix = (rows: number, cols: number): Coords[][] => {
+  const matrix: Coords[][] = []
 
   for (let i = 0; i < rows; i++) {
 
@@ -17,65 +17,41 @@ const buildBoardMatrix = (rows: number, cols: number): Cords[][] => {
 }
 
 
-// In order the snake to grow, we need to get the cell in front of the snake and populate it
-const getSnakeFrontCell = ({row, col}: Cords, direction: Directions): Cords => {
+// We need to get the cell in front of the snake and populate it when moving
+const getSnakeFrontCell = ({row, col}: Coords, direction: Directions): Coords => {
+  const {Up, Left, Right} = Directions
 
-  if (direction === Directions.Right) {
-    return {
-      row,
-      col: col + 1
-    }
-  } else if (direction === Directions.Left) {
-    return {
-      row,
-      col: col - 1
-    }
-  } else if (direction === Directions.Up) {
-    return {
-      row: row - 1,
-      col
-    }
-  }
-
-  return {
-    row: row + 1,
-    col
+  switch (direction) {
+    case Right:
+      return {row, col: col + 1}
+    case Left:
+      return {row, col: col - 1}
+    case Up:
+      return {row: row - 1, col}
+    default:
+      return {row: row + 1, col}
   }
 }
 
-const isOccupiedBySnake = (currCell: Cords, snakeCells: Cords[]): boolean => {
-  return snakeCells.some(snakeCell => {
-    return snakeCell.row === currCell.row && snakeCell.col === currCell.col;
-  })
-}
-
-const isAppleCell = (currCell: Cords, apple: Cords): boolean => {
-  return currCell.row === apple.row && currCell.col === apple.col
-}
-
-const isCollision = (snake: Cords[], BoardCords: Cords): boolean => {
+const isCollision = (snake: Coords[], Board: Coords): boolean => {
   const {row, col} = snake[0] // SnakeHead Coordinates
 
   const isSnakeSelfOverlapped = snake.slice(1).some(cell => row === cell.row && col === cell.col)
 
-  return isSnakeSelfOverlapped || row < 0 || col < 0 || col >= BoardCords.row || row >= BoardCords.col
+  return isSnakeSelfOverlapped || row < 0 || col < 0 || col >= Board.row || row >= Board.col
 }
 
-const getRandomNumber = (max: number): number => {
-  return Math.floor(Math.random() * max);
-}
-
-const createApple = (newCords: Cords): Cords => {
+const createApple = ({row, col}: Coords): Coords => {
   // TODO Add additional check, the apple shouldn't overlap with the snake
-  return {row: getRandomNumber(newCords.row), col: getRandomNumber(newCords.col)}
+  return {row: Math.floor(Math.random() * row), col: Math.floor(Math.random() * col)}
 }
 
-const isAppleEaten = (snakeHead: Cords, apple: Cords): boolean => {
+const isAppleEaten = (snakeHead: Coords, apple: Coords): boolean => {
   return snakeHead.row === apple.row && snakeHead.col === apple.col
 }
 
-// If snake moves left, players shouldn't be allowed to change to direction to right or same direction
-// or to change it to left, this is
+// If snake moves left, players shouldn't be allowed to set new direction to right and left
+// same for Up and Down
 const getAllowedDirection = (currDirection: Directions, newDirection: Directions): Directions => {
   const {Up, Down, Left, Right} = Directions
 
@@ -90,24 +66,23 @@ const getAllowedDirection = (currDirection: Directions, newDirection: Directions
   return newDirection
 }
 
-const getClassByOccupier = ({row, col}: Cords, snake: Cords[], apple: Cords): string => {
+const getClassByOccupier = ({row, col}: Coords, snake: Coords[], apple: Coords): string => {
 
-  if (isOccupiedBySnake({row, col}, snake)) {
+  const isSnakeOver = snake.some(s => s.row === row && s.col === col)
+
+  if (isSnakeOver) {
     return 'snake'
-  } else if (isAppleCell({row, col}, apple)) {
-    return 'apple'
   }
 
-  return ''
+  const isAppleOver = row === apple.row && col === apple.col
+
+  return isAppleOver ? 'apple' : ''
 }
 
 export {
   buildBoardMatrix,
   getSnakeFrontCell,
-  isOccupiedBySnake,
-  isAppleCell,
   isCollision,
-  getRandomNumber,
   createApple,
   isAppleEaten,
   getClassByOccupier,
